@@ -36,7 +36,7 @@ const users = {
 };
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello World! My name is space_and_cookies!");
 });
 
 app.get("/users", (req, res) => {
