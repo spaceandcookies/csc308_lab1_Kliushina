@@ -100,6 +100,7 @@ const deleteUserById = (id) => {
   return false;
 };
 
+
 app.delete("/users/:id", (req, res) => {
   const id = req.params.id;
   const success = deleteUserById(id);
