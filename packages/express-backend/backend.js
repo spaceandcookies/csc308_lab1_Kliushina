@@ -83,9 +83,16 @@ const addUser = (user) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
+  userToAdd.id = generateId();
   addUser(userToAdd);
   res.status(201).send(userToAdd);
 });
+
+function generateId() {
+  const letters = Math.random().toString(36).substring(2, 5);
+  const numbers = Math.floor(Math.random() * 900 + 100); //looked up --> random*900 gives range of 0-900 and adding 100 shifts it to produce 100-999
+  return numbers + letters;
+}
 
 app.listen(port, () => {
   console.log(
