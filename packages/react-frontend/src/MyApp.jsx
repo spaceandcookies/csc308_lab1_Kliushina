@@ -33,15 +33,32 @@ function MyApp() {
 
   function updateList(person) { 
     postUser(person)
-      .then(() => setCharacters([...characters, person]))
+      .then((res) => {
+        if (res.status === 201) {
+          return res.json();
+        } else {
+          throw new Error("Failed to create user");
+        }
+      })
+
+      .then((newUser) => setCharacters([...characters, newUser]))
       .catch((error) => {
         console.log(error);
       })
   }
 
-  function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => i !== index); 
-    setCharacters(updated); 
+  function removeOneCharacter(id) {
+    fetch(`http://localhost:8000/users/${id}`, { method: "DELETE" })
+    .then((res) => {
+      if (res.status === 204){
+        setCharacters(characters.filter((character) => character.id !== id));
+      } else if (res.status === 404) {
+        console.log("User not found");
+      }
+    })
+    .catch((error) => {
+      console.log("Error deleting user:", error);
+    });
   }
 
   return (

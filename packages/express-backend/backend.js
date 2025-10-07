@@ -42,16 +42,16 @@ app.get("/", (req, res) => {
 });
 
 app.get("/users", (req, res) => {
-  res.send(users);
-});
-
-app.get("/users", (req, res) => {
   const name = req.query.name;
   const job = req.query.job;
 
-  let result = findUsersByNameAndJob(name, job);
-  result = { users_list: result };
-  res.send(result);
+   if (name === undefined && job === undefined) {
+    res.send(users);
+   } else {
+    let result = findUsersByNameAndJob(name, job);
+    result = { users_list: result };
+    res.send(result);
+   }
 });
 
 const findUserById = (id) =>
@@ -67,7 +67,7 @@ const findUsersByNameAndJob = (name, job) => {
 };
 
 app.get("/users/:id", (req, res) => {
-  const id = req.params["id"]; //or req.params.id
+  const id = req.params["id"]; 
   let result = findUserById(id);
   if (result === undefined) {
     res.status(404).send("Resource not found.");
@@ -83,9 +83,22 @@ const addUser = (user) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
+  userToAdd.id = generateId();
   addUser(userToAdd);
   res.status(201).send(userToAdd);
 });
+
+function generateId() {
+  var result = '';
+  var chars = 'abcdefghijklmnopqrstuvwxyz';
+  for (var i = 0; i < 3; i++){
+    const randomIndex = Math.floor(Math.random() * chars.length);
+    result += chars.charAt(randomIndex);
+  }
+
+  const numbers = Math.floor(Math.random() * 900 + 100); //looked up --> random*900 gives range of 0-900 and adding 100 shifts it to produce 100-999
+  return result + numbers;
+}
 
 app.listen(port, () => {
   console.log(
