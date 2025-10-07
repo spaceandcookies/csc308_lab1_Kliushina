@@ -1,11 +1,14 @@
 import express from "express";
 import cors from "cors";
 
+
 const app = express();
 const port = 8000;
 
+
 app.use(cors());
 app.use(express.json());
+
 
 const users = {
   users_list: [
@@ -37,25 +40,28 @@ const users = {
   ]
 };
 
+
 app.get("/", (req, res) => {
   res.send("Hello World! My name is space_and_cookies!");
 });
 
-app.get("/users", (req, res) => {
-  res.send(users);
-});
 
 app.get("/users", (req, res) => {
   const name = req.query.name;
   const job = req.query.job;
-
-  let result = findUsersByNameAndJob(name, job);
-  result = { users_list: result };
-  res.send(result);
+   if (name === undefined && job === undefined) {
+    res.send(users);
+   } else {
+    let result = findUsersByNameAndJob(name, job);
+    result = { users_list: result };
+    res.send(result);
+   }
 });
+
 
 const findUserById = (id) =>
   users["users_list"].find((user) => user["id"] === id);
+
 
 const findUsersByNameAndJob = (name, job) => {
   return users["users_list"].filter((user) => {
@@ -66,8 +72,9 @@ const findUsersByNameAndJob = (name, job) => {
   });
 };
 
+
 app.get("/users/:id", (req, res) => {
-  const id = req.params["id"]; //or req.params.id
+  const id = req.params["id"];
   let result = findUserById(id);
   if (result === undefined) {
     res.status(404).send("Resource not found.");
@@ -76,10 +83,12 @@ app.get("/users/:id", (req, res) => {
   }
 });
 
+
 const addUser = (user) => {
   users["users_list"].push(user);
   return user;
 };
+
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
@@ -88,11 +97,20 @@ app.post("/users", (req, res) => {
   res.status(201).send(userToAdd);
 });
 
+
 function generateId() {
-  const letters = Math.random().toString(36).substring(2, 5);
+  var result = '';
+  var chars = 'abcdefghijklmnopqrstuvwxyz';
+  for (var i = 0; i < 3; i++){
+    const randomIndex = Math.floor(Math.random() * chars.length);
+    result += chars.charAt(randomIndex);
+  }
+
+
   const numbers = Math.floor(Math.random() * 900 + 100); //looked up --> random*900 gives range of 0-900 and adding 100 shifts it to produce 100-999
-  return numbers + letters;
+  return result + numbers;
 }
+
 
 app.listen(port, () => {
   console.log(
@@ -108,7 +126,6 @@ const deleteUserById = (id) => {
   }
   return false;
 };
-
 
 app.delete("/users/:id", (req, res) => {
   const id = req.params.id;
