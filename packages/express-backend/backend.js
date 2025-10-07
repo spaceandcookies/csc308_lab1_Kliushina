@@ -1,8 +1,10 @@
 import express from "express";
+import cors from "cors";
 
 const app = express();
 const port = 8000;
 
+app.use(cors());
 app.use(express.json());
 
 const users = {
@@ -99,6 +101,7 @@ const deleteUserById = (id) => {
   }
   return false;
 };
+
 
 app.delete("/users/:id", (req, res) => {
   const id = req.params.id;
