@@ -73,11 +73,11 @@ test('Testing containsNumbers without numbers with special characters -- success
 });
 
 test('Testing containsNumbers without any text -- success', () => {
-  expect(myFunctions.containsNumbers('  ')).toBe(false); //caught the bug! Empty string evaluates to true instead of false --> 
+  expect(myFunctions.containsNumbers('  ')).toBe(false); //caught the bug! Empty string evaluates to true instead of false
 });
 
 test('Testing containsNumbers with text and blank space -- success', () => {
-  expect(myFunctions.containsNumbers('hello     ')).toBe(false); //caught the bug! Empty string evaluates to true instead of false --> 
+  expect(myFunctions.containsNumbers('hello     ')).toBe(false); //same thing as previous test: blank space counts as number when there isn't one
 });
 
 test('Testing containsNumbers with just special characters -- success', () => {
