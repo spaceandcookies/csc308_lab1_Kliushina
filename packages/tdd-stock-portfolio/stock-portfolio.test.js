@@ -76,3 +76,11 @@ test('selling shares person does not own', () => {
   const portfolio = new Portfolio();
       expect(() => portfolio.sell('NNNN', 1)).toThrow("You don't own this stock");
 });
+
+// I was mostly able to follow the test-first approach. When I code I often tend to think of all
+// the possible niche cases that can happen so I wrote code for a few cases before I was even asked 
+// to test for them like in 2.8 and 2.6 - I already had the implementation for them. I am also syntax-challanged
+// so sometimes my tests continued to fail even when I gave correct implementation because I'd miss a semicolon 
+// or a parenthesis in the test (but that's my problem, not this approach's problem). Overall though I do like 
+// this approach - it's straight forward and does a good job highlighting what needs to be done first and the order 
+// of significance when organizing the code.
